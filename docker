@@ -1,0 +1,42 @@
+Install Docker on Ubuntu 18.04
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```
+обновляем репо
+sudo apt update
+```
+устанавливаем поддержку хттпс
+sudo apt install apt-transport-https
+```
+добавляем ключ?
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+```
+говорим скачивать и устанавливать только стабильные версии
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+```
+снова апдейтим репо
+sudo apt update
+```
+ставим докер се, бесплатный
+sudo apt install docker-ce
+```
+проверяем статус службы
+sudo systemctl status docker
+```
+Чтобы Docker мог запускать пользователь, не обладающий правами root, добавьте его в группу docker. 
+Следующая команда позволит текущему пользователю, не имеющему прав root, запускать Docker, иначе придется всегда пистаь судо...))))
+sudo usermod -aG docker $USER
+```
+для применения прав учетки перелогиниваемся
+>>>logout/login<<<
+```
+запускаем имидж хеловорлд если не находит локально то ищет в инете скачивает и запускает
+docker run hello-world
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ищем в библилотеке в инете имидж томкат
+docker search tomcat
+
+скачать имидж себе и ничего не делать
+docker pull tomcat
+
+
