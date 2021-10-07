@@ -8,6 +8,7 @@ sudo apt update
 sudo apt install apt-transport-https
 ```
 добавляем ключ?
+Далее добавим в систему GPG-ключ для работы с официальным репозиторием Docker
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 ```
 говорим скачивать и устанавливать только стабильные версии
@@ -38,5 +39,47 @@ docker search tomcat
 
 скачать имидж себе и ничего не делать
 docker pull tomcat
+
+docker  ps     # list текущих containers
+docker  ps -a  # list all containers которіе когда либо выполнялись
+
+запускаем контейнер интреактивно (it) визуально будем видеть как онг бежит, перенаправление портов -p на 1234 с 8080, 
+docker run it -p 1234:8080 tomcat
+
+запускаем контейнер в режиме daemon (d), тоесть будет выполняться в оперативе висеть постоянно, перенаправление портов -p на 1237 с 8080, 
+docker run d - 1235:8080 tomcat
+
+запускаем ещё один контейнер в режиме daemon (d) но будем использовать образ nginx, докер сам скачает его и запустит
+docker run -d -p 1237:80 nginx
+
+удалять можно по имени контейнера(имиджа) или по айди
+docker rm   # delete container
+docker rmi  # delete image
+
+
+создаём свой докер имэдж
+создаём папку и в ней файл Dockerfile:
+#---------------------------------------------------------------------------
+# Dockefile to build Docker Image of Apache WebServer running on Ubuntu
+#
+# Made by Denis Astahov ADV-IT  13-March-2019
+#---------------------------------------------------------------------------
+FROM ubuntu:16.04
+RUN apt-get -y update
+RUN apt-get -y install apache2
+RUN echo 'Hello World from Docker!' > /var/www/html/index.html
+CMD ["/usr/sbin/apache2ctl", "-D","FOREGROUND"]
+EXPOSE 80
+
+строим свой имейдж denis и конфиг файл ищем в текущей директории
+docker build -t denis .
+
+запускаем наш имидж в контейнер
+docker run -d -p 7777:80 denis
+
+работа с тагами:
+по умолчанию если не указать через двоеточие версию тага, то запускается последняя.
+создаём копию имиджа при помощи команды, хотя вначале может показаться что только таг добавляем...))) :
+docker tag denis denis:v2
 
 
