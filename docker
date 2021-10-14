@@ -87,3 +87,40 @@ docker run -d -p 7777:80 denis
 docker tag denis denis:v2
 
 37 min
+
+UPDATE IMAGE
+~~~~~~~~~~~~~
+запускаем имидж denis_ubuntu4 в режиме демон переназначим порт 80 на 7777
+docker run -d -p 7777:80 denis_ubuntu4
+
+запускаем интерактивно в имидже 5267e21d140 командную строку
+docker exec -it 5267e21d140 /bin/bash
+
+дописываем V2 в файл index.html
+echo "V2" >> /var/www/html/index.html
+exit
+
+создаём имидж denis_v2:latest из контейнера 5267e21d140
+docker commit 5267e21d140 denis_v2:latest
+
+Export/Import Docker Image to file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+docker save image:tag > arch_name.tar
+docker load -i arch_name.tar
+
+
+Import/Export Docker Image to AWS ECR
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+docker build -t denis:v1 .
+aws ecr get-login --no-include-email --region=ca-central-1 
+docker tag  denis:v1  12345678.dkr.ecr.ca-central-1.amazonaws.com/myrepo:latest
+docker push 12345678.dkr.ecr.ca-central-1.amazonaws.com/myrepo:lastest
+
+docker pull 12345678.dkr.ecr.ca-central-1.amazonaws.com/myrepo:latest
+
+
+
+Kill and Delete Containers and Images
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+docker rm -f $(docker ps -aq)        # Delete all Containers
+docker rmi -f $(docker images -q)    # Delete all Images
