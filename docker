@@ -1,6 +1,9 @@
 Install Docker on Ubuntu 18.04
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ```
+устанавливаем часовой пояс
+sudo timedatectl set-timezone Europe/Kiev
+```
 обновляем репо
 sudo apt update
 ```
@@ -65,6 +68,7 @@ docker rmi  # delete image
 # Made by Denis Astahov ADV-IT  13-March-2019
 #---------------------------------------------------------------------------
 FROM ubuntu:16.04
+#FROM ubuntu:latest
 RUN apt-get -y update
 RUN apt-get -y install apache2
 RUN echo 'Hello World from Docker!' > /var/www/html/index.html
@@ -82,4 +86,4 @@ docker run -d -p 7777:80 denis
 создаём копию имиджа при помощи команды, хотя вначале может показаться что только таг добавляем...))) :
 docker tag denis denis:v2
 
-
+37 min
